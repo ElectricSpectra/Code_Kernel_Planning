@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code Kernel '26 — Team Work Plan · X-Kernel GRIET</title>
+<meta name="description" content="Code Kernel '26 team work plan: search your name to see your work, your lead and who you coordinate with.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f6f2; --grid:rgba(59,125,216,.07); --ink:#16181d; --muted:#5b6170; --line:#e3e1da;
+  --blue:#3B7DD8; --blue-d:#2a62b0; --blue-l:#e8f0fb; --card:#fff; --warn:#fff4e5; --warn-b:#f0a33a;
+  --term:#14161b; --term2:#1d2027; --term-ink:#e6e8ee; --ok:#2f9e6b;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;font-family:var(--sans);color:var(--ink);font-size:16px;line-height:1.55;
+  background-color:var(--bg);
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;}
+a{color:var(--blue-d)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 16px}
+header.top{padding:28px 0 8px}
+.badge{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;background:var(--term);color:var(--term-ink);padding:6px 10px;border-radius:8px}
+.badge i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block}
+h1{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(40px,9vw,78px);line-height:1.02;margin:14px 0 10px;letter-spacing:-.5px}
+h1 .accent{color:var(--blue)}
+.lede{font-size:17px;color:var(--muted);max-width:720px;margin:0 0 6px}
+.lede b{color:var(--ink)}
+.goal{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--blue);border-radius:12px;padding:12px 14px;margin:14px 0 0;max-width:760px}
+.goal b{color:var(--blue-d)}
+/* search */
+.search-box{position:sticky;top:0;z-index:20;padding:10px 0 8px;background:linear-gradient(var(--bg) 82%,rgba(247,246,242,0))}
+.search{display:flex;gap:8px;background:#fff;border:2px solid var(--blue);border-radius:14px;padding:6px 6px 6px 14px;box-shadow:0 6px 24px rgba(59,125,216,.14)}
+.search svg{flex:none;align-self:center;color:var(--blue)}
+.search input{flex:1;min-width:0;border:0;outline:0;font:inherit;font-size:18px;padding:10px 4px;background:transparent}
+.search button{border:0;background:var(--blue-l);color:var(--blue-d);font:inherit;font-weight:600;border-radius:10px;padding:0 14px;min-height:44px;cursor:pointer}
+.hint{font-size:13px;color:var(--muted);margin:6px 2px 0}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 2px 4px;scrollbar-width:thin}
+.chip{flex:none;border:1px solid var(--line);background:#fff;border-radius:999px;padding:0 14px;min-height:40px;font:inherit;font-size:14px;font-weight:500;cursor:pointer;color:var(--ink);white-space:nowrap}
+.chip:hover{border-color:var(--blue)}
+.chip.on{background:var(--blue);border-color:var(--blue);color:#fff}
+#results{margin-top:6px}
+.empty{background:#fff;border:1px dashed var(--line);border-radius:14px;padding:16px;color:var(--muted)}
+.res-head{font-size:14px;color:var(--muted);margin:6px 2px 10px}
+/* cards */
+section{padding:26px 0 6px}
+h2{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(30px,6vw,44px);margin:0 0 12px;line-height:1.1}
+h2 .accent{color:var(--blue)}
+h3{margin:0;font-size:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 1px 0 rgba(0,0,0,.02)}
+.person{border:2px solid var(--blue);box-shadow:0 8px 28px rgba(59,125,216,.12)}
+.p-head{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:space-between}
+.p-name{font-family:var(--serif);font-style:italic;font-size:30px;line-height:1.1;margin:0}
+.p-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12px;font-weight:600;background:var(--blue-l);color:var(--blue-d);border-radius:999px;padding:4px 10px;cursor:pointer;border:0;font-family:inherit}
+.tag.role{background:#eef0f3;color:#333;cursor:default}
+.btn{border:1px solid var(--blue);background:#fff;color:var(--blue-d);font:inherit;font-size:14px;font-weight:600;border-radius:10px;padding:0 14px;min-height:44px;cursor:pointer}
+.btn.solid{background:var(--blue);color:#fff}
+.btn.done{background:var(--ok);border-color:var(--ok);color:#fff}
+.label{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;color:var(--muted);margin:14px 0 6px}
+ul.tasks{margin:0;padding-left:20px}
+ul.tasks li{margin:4px 0}
+.mine{background:var(--blue-l);border-radius:12px;padding:10px 12px 10px 12px}
+.mine ul{margin:0;padding-left:20px}
+.deadline{display:flex;gap:10px;align-items:flex-start;background:var(--warn);border:1px solid #f6d6a8;border-radius:12px;padding:10px 12px;margin-top:10px}
+.deadline .clock{flex:none;font-size:18px;line-height:1.3}
+.team-block{border-top:1px solid var(--line);margin-top:14px;padding-top:4px}
+.kv{display:grid;grid-template-columns:110px 1fr;gap:4px 10px;font-size:15px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0}
+.coord{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.coord li{display:flex;gap:8px;align-items:flex-start;background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.coord li b{white-space:nowrap}
+.arrow{color:var(--blue);font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.grid .card{margin:0}
+.team-card h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:26px}
+.team-card .num{font-family:var(--mono);font-size:12px;color:var(--blue);}
+.member{display:inline-block;background:#f1f1ee;border-radius:8px;padding:3px 8px;margin:2px 4px 2px 0;font-size:14px;cursor:pointer;border:0;font-family:inherit;color:var(--ink)}
+.member:hover{background:var(--blue-l)}
+.member small{color:var(--muted)}
+details.more summary{cursor:pointer;color:var(--blue-d);font-weight:600;min-height:40px;display:flex;align-items:center}
+.pw{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+.pw li{display:grid;grid-template-columns:minmax(150px,auto) 1fr;gap:2px 10px;align-items:baseline;background:#fafaf8;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px}
+.pw .member{font-weight:600;background:var(--blue-l);color:var(--blue-d);margin:0;justify-self:start}
+.pw-team{font-size:12px;color:var(--muted);font-weight:600}
+.pw-why{grid-column:1/-1;font-size:14.5px}
+.pw-why small{color:var(--muted)}
+/* oversight */
+.over{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px}
+.over .card{margin:0}
+.over h3{font-family:var(--serif);font-style:italic;font-weight:400;font-size:24px}
+.tree{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:6px}
+.node{background:var(--term);color:var(--term-ink);border-radius:12px;padding:12px;font-family:var(--mono);font-size:13px}
+.node .who{color:#8fb8f2;font-weight:600}
+.node .kid{margin:6px 0 0;padding-left:8px;border-left:2px solid #3B7DD8}
+.pairs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.pair{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;font-size:14px}
+/* go-to table */
+.goto{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.goto .g{background:#fff;border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:4px}
+.goto .need{font-weight:600}
+.goto .to{color:var(--blue-d);font-size:15px}
+/* timeline */
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden}
+th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top;font-size:15px}
+th{background:#f1f3f7;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+td.t{font-family:var(--mono);white-space:nowrap;color:var(--blue-d);font-weight:600}
+tr:last-child td{border-bottom:0}
+/* urgent */
+.urgent{background:var(--warn);border:2px solid var(--warn-b);border-radius:16px;padding:16px}
+.urgent h2{color:#8a4b00}
+.pill{display:inline-block;background:var(--warn-b);color:#fff;font-weight:700;font-size:12px;letter-spacing:.06em;border-radius:999px;padding:4px 10px;text-transform:uppercase}
+/* terminal templates */
+.term{background:var(--term);color:var(--term-ink);border-radius:16px;overflow:hidden;margin-bottom:16px;box-shadow:0 10px 30px rgba(20,22,27,.18)}
+.term-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--term2)}
+.dots{display:flex;gap:6px}.dots i{width:10px;height:10px;border-radius:50%;display:block;background:#ff5f57}.dots i:nth-child(2){background:#febc2e}.dots i:nth-child(3){background:#28c840}
+.term-title{font-family:var(--mono);font-size:13px;color:#9aa3b5;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.term .btn{background:transparent;color:#fff;border-color:#3B7DD8;min-height:40px}
+.term .btn.done{background:var(--ok);border-color:var(--ok)}
+.term pre{margin:0;padding:14px 16px;white-space:pre-wrap;word-wrap:break-word;font-family:var(--mono);font-size:13.5px;line-height:1.6}
+footer{padding:30px 0 40px;color:var(--muted);font-size:13px;text-align:center}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(80px);background:var(--term);color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;transition:transform .2s,opacity .2s;z-index:50;opacity:0;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.toplink{display:inline-block;margin-top:8px;font-size:14px}
+mark{background:#fde68a;border-radius:3px;padding:0 1px}
+@media (max-width:560px){
+  .kv{grid-template-columns:1fr}
+  .kv dt{margin-top:6px}
+  .p-name{font-size:26px}
+  .card{padding:14px}
+  th,td{padding:9px 10px;font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <span class="badge"><i></i> X-Kernel · GRIET · kickoff Sat 10 Oct</span>
+  <h1>Code Kernel '26 — <span class="accent">Team Work Plan</span></h1>
+  <p class="lede"><b>Code Kernel '26</b> is an online national problem-solving challenge on <b>Unstop</b>, <b>12–21 Oct 2026</b>, open to students from any college. Teams go through three stages: <b>Decode → Build → Prove</b>.</p>
+  <div class="goal"><b>Goal for today:</b> every team starts their work today, publicity goes live everywhere, and we get as many Unstop registrations as possible.</div>
+</header>
+
+<div class="search-box">
+  <label class="search" for="q">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="q" type="search" placeholder="Search your name" autocomplete="off" autocapitalize="words" spellcheck="false" aria-label="Search your name">
+    <button type="button" id="clear" aria-label="Clear search">Clear</button>
+  </label>
+</div>
+<div>
+  <p class="hint">First name is enough — e.g. “Karthik”, “Manvita”, “Gladson”. Or tap a team:</p>
+  <div class="chips" id="chips" role="tablist" aria-label="Teams"></div>
+</div>
+
+<div id="results" aria-live="polite"></div>
+
+<section id="abstract">
+  <div class="urgent">
+    <span class="pill">⚠ Urgent blocker · Documentation</span>
+    <h2>The abstract</h2>
+    <p>The event starts <b>Monday</b>, so the abstract has to be ready <b>today</b>. College rules say an online event needs signatures from the <b>Coordinator, DSA and Principal</b>. If we charge a registration fee, the approved abstract also goes to <b>Accounts in the Admin Block</b>, who issue the <b>Easepay QR</b> for payments.</p>
+    <div class="label">The abstract must include</div>
+    <ul class="tasks">
+      <li>Event name: Code Kernel '26</li>
+      <li>Objective and a short description: an online national challenge where teams decode a real problem, build a solution and prove it with a working demo</li>
+      <li>Event details: the three stages, hosted on Unstop, open to all colleges</li>
+      <li>Dates: 12–21 Oct 2026. Mode: online (Unstop).</li>
+      <li>Expected participants: to be filled in by the database team from the current Unstop registrations</li>
+      <li>Budget and prize pool: proposed ₹20,000 pool; proposed ₹300 fee per team for the teams shortlisted after Round 1 (<i>confirm with Sohan before submitting</i>)</li>
+    </ul>
+    <div class="deadline"><span class="clock">⏰</span><div>Draft to Sohan for review by <b>3 PM</b>. Get it signed by the Coordinator, <b>Dr B. Padma Vijetha Dev</b>, today if possible (target: with the Coordinator by 7 PM). Line up DSA and Principal signatures for <b>first thing Monday</b>. Keep scans or photos of every signed copy.</div></div>
+  </div>
+</section>
+
+<section id="overseers">
+  <h2>Who <span class="accent">oversees</span> what</h2>
+  <div class="over" id="overGrid"></div>
+</section>
+
+<section id="coordination">
+  <h2>Who to go to <span class="accent">for what</span></h2>
+  <div class="goto" id="gotoGrid"></div>
+  <div class="label" style="margin-top:20px">Reporting lines</div>
+  <div class="tree" id="tree"></div>
+  <div class="label">Teams that work closely together</div>
+  <div class="pairs" id="pairs"></div>
+</section>
+
+<section id="teams">
+  <h2>All <span class="accent">teams</span></h2>
+  <div class="grid" id="teamGrid"></div>
+</section>
+
+<section id="timeline">
+  <h2>Today's <span class="accent">timeline</span> <span style="font-size:.55em;color:var(--muted)">(Sat 10 Oct)</span></h2>
+  <table><thead><tr><th>Time</th><th>What</th></tr></thead><tbody id="tl"></tbody></table>
+</section>
+
+<section id="briefing">
+  <h2>Briefing for <span class="accent">new recruits</span></h2>
+  <p class="hint" style="margin-top:-6px">Leads read this out at the 2:00 PM kickoff.</p>
+  <div class="card">
+    <div class="label" style="margin-top:0">What the event is</div>
+    <p style="margin:0">Code Kernel '26 is an online challenge on Unstop from 12 to 21 Oct, open to students from any college. Teams decode a real problem, build a solution and prove it works.</p>
+    <div class="label">Why your work matters</div>
+    <p style="margin:0">Registrations decide whether the event succeeds, and every poster, message and reply brings in teams.</p>
+    <div class="label">How we work</div>
+    <ol style="margin:0;padding-left:22px">
+      <li>Your lead gives you a clear task and a deadline. If anything is unclear, ask right away.</li>
+      <li>Share your progress in your team group, not just at the end.</li>
+      <li>Anything that goes public (posts, messages to CRs, sponsor messages) needs a lead's sign-off first.</li>
+      <li>Be polite and quick with participants and sponsors, because you're representing X-Kernel.</li>
+      <li>If you finish early or get stuck, tell your lead or Hasmitha, and we'll move you where help is needed.</li>
+    </ol>
+    <div class="label">What each team does</div>
+    <p style="margin:0">Publicity and Design bring people in. Database and the Help Desk look after the people who join. Event Mgmt and Training run the challenge itself. Documentation and Sponsorship handle approvals and partners.</p>
+  </div>
+</section>
+
+<section id="templates">
+  <h2>Message <span class="accent">templates</span></h2>
+  <p class="hint" style="margin-top:-6px">Replace the [links] before sending. Anything public needs a lead's sign-off first.</p>
+  <div class="term">
+    <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span class="term-title">whatsapp — groups &amp; CRs</span><button class="btn" data-copy="wa">Copy</button></div>
+    <pre id="wa"></pre>
+  </div>
+  <div class="term">
+    <div class="term-bar"><span class="dots"><i></i><i></i><i></i></span><span class="term-title">linkedin — sponsor post</span><button class="btn" data-copy="li">Copy</button></div>
+    <pre id="li"></pre>
+  </div>
+</section>
+
+<footer>X-Kernel · GRIET Hyderabad · Code Kernel '26 work plan (Sat 10 Oct). No login, no tracking — this page only runs in your browser.</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+/* ============ DATA (from code-kernel-26-work-plan.md) ============ */
+const TEAMS = [
+ {id:"doc", name:"Documentation", lead:"Lahari", leadLabel:"Lead", overseer:"Ajasra (GS)",
+  members:["M. Siddharth","Kedar Aryan","Arne Rama Thulasi"],
+  tasks:[
+   "Draft the abstract (see the urgent section) and send it to Sohan for review by 3 PM. Start the signature chase right after.",
+   "Make a Sponsor Tracker sheet: company, contact, what they're offering, what we promised, MOU status and payment status.",
+   "Prepare an X-Kernel MOU template for sponsors. The Coordinator's signature is enough on our side. Never promise anything we can't deliver.",
+   "Keep a shared folder with the signed and approved abstract, the MOUs, sponsor emails, the registration list and every bill or proof.",
+   "Make the sponsor link for Sponsorship's LinkedIn post: a simple Google Form (company, contact person, phone/email, kind of support: cash, problem statement, prizes or internships)."
+  ],
+  today:"Abstract draft to Sohan by 3 PM, then the signature chase (with the Coordinator by 7 PM; DSA + Principal first thing Monday).",
+  coordinatesWith:[{team:"Sohan",forWhat:"the abstract"},{team:"Sponsorship",forWhat:"Sponsor Tracker and MOUs"},{team:"Database",forWhat:"registration numbers for the abstract"}]},
+ {id:"db", name:"Database & Unstop page", short:"Database", lead:"Koteshwar", leadLabel:"Lead", overseer:"Ajasra (GS)",
+  members:["Manvita Hamsini","Bhavana Singh","Gnaneshwar Chepuri","Manish Bollikonda"],
+  tasks:[
+   "Manvita: owns the Unstop page — details, FAQs, timeline, prizes and partner logos; daily registration count at 9 PM.",
+   "Bhavana: registration sheet exported from Unstop (team, college, city, contact); spot which colleges are and aren't registering.",
+   "Gnaneshwar: track submissions and round shortlists once the event starts; give the Help Desk the list of teams to add to the community.",
+   "Manish: support the others; build the paid-team list once the Round 2 fee is approved."
+  ],
+  today:"Confirm every Unstop field is correct and send the first registration count to Sohan and Hasmitha (9 PM).",
+  coordinatesWith:[{team:"Publicity",forWhat:"which colleges to push"},{team:"Help Desk",forWhat:"participant lists"},{team:"Documentation",forWhat:"numbers for the abstract"}]},
+ {id:"design", name:"Design & Video Editing", short:"Design", lead:"Shreyas", leadLabel:"Lead", overseer:"Manoj (VP) — signs off posters & reels",
+  members:["Sai Pavan (main person)","Voruganti Puneeth","Palla Harshavardhan","K. Elia","Arne Rama Thulasi","Saveri (Arts Lead, mood board)"],
+  tasks:[
+   "Step 1, by 3 PM: everyone collects 5–10 inspirations (hackathon posters, tech reels, Unstop and Devfolio event creatives) into one shared mood board. Shreyas and Saveri pick the final style. The website wireframe style (light grid, blue serif italic headlines, terminal cards, mascot) is a good starting point, so everything matches.",
+   "Step 2, split the work: Sai Pavan — launch reel + overall look; Puneeth — main poster (feed + story); Harshavardhan — countdown series; Elia — WhatsApp/CR poster with Unstop QR; Rama Thulasi — sponsor shoutout + certificate templates."
+  ],
+  today:"Mood board by 3 PM. Main poster and WhatsApp poster ready by 7 PM so Publicity can send them tonight. Reel out by Sunday.",
+  coordinatesWith:[{team:"Publicity",forWhat:"content and captions"},{team:"Manoj",forWhat:"sign-off"},{team:"Sponsorship",forWhat:"sponsor logos"}]},
+ {id:"pub", name:"Publicity & Social Media", short:"Publicity", lead:"Divya", leadLabel:"Lead", overseer:"Manoj (VP)",
+  members:["Sai Pavan (leads with Divya)","Sahiti","G. Dinesh","M. Sahasra Reddy","M. Snehin Yadav","M. Sannidhi","Daniyal Solkar (mainly Sponsorship)"],
+  tasks:[
+   "Sai Pavan: content plan and reel concept with Divya; share reel ideas and formats with the leads by 3 PM.",
+   "Sahiti and Sannidhi: captions and post copy for Instagram and LinkedIn, plus the WhatsApp message (template below).",
+   "Dinesh and Snehin: distribution — list every channel: college WhatsApp groups, other clubs at GRIET and other colleges, LinkedIn, Instagram collabs and Unstop sharing.",
+   "Sahasra: link Publicity with Event Management for the CR outreach."
+  ],
+  today:"Announcement on Instagram and LinkedIn by evening (social posts live ~8 PM), and the WhatsApp message sent to every group we're in.",
+  coordinatesWith:[{team:"Design",forWhat:"creatives"},{team:"CR Outreach",forWhat:"message and poster for CRs"},{team:"Database",forWhat:"which colleges to target"}]},
+ {id:"cr", name:"CR Outreach squad", short:"CR Outreach", lead:"V. Harihara Sai", leadLabel:"Owner", overseer:"Manoj (VP)",
+  note:"New squad from Event Mgmt and Logistics (Logistics has no work this event).",
+  members:["A. Raghuram Varma","Sarikonda Naga Badri Bhatt","Nakka Vaishnavi","M. Keerthana","Harshitha Bangaru"],
+  tasks:[
+   "Collect the contacts of every class representative (CR) at GRIET, split by year and branch.",
+   "Send each CR the WhatsApp message and poster, and ask them to forward it to their class group.",
+   "Keep a sheet of each CR, their class and whether it's sent and confirmed.",
+   "Ask friends at other colleges to share it in their groups too."
+  ],
+  today:"Full CR list by 6 PM and every message sent by 9 PM.",
+  coordinatesWith:[{team:"Publicity",forWhat:"the message and poster"},{team:"Hasmitha",forWhat:"progress updates"}]},
+ {id:"hd", name:"Help Desk & Participant Mgmt", short:"Help Desk", lead:"Gera Gladson", leadLabel:"Owner", overseer:"Ajasra (GS)",
+  note:"New team from Event Mgmt and Logistics.",
+  members:["J. Pushkar","Guduru Rohan","Sai Charan","Vyshnavi R"],
+  tasks:[
+   "Set up a participant community — Discord is best for an online event, WhatsApp Community as backup. Channels: announcements, rules, FAQs, help desk, a doubts channel for each stage, and team formation.",
+   "Add the community invite link to the Unstop page (through Manvita).",
+   "Write a FAQ covering eligibility, team size, the stages, submissions, deadlines and certificates.",
+   "Answer participant questions quickly, ideally within an hour, between 9 AM and 11 PM.",
+   "Pass tech doubts to the Training team."
+  ],
+  today:"Community live (Discord by ~8 PM) with the invite link on Unstop.",
+  coordinatesWith:[{team:"Database",forWhat:"participant lists"},{team:"Training",forWhat:"tech doubts"},{team:"Event Management",forWhat:"announcements"}]},
+ {id:"em", name:"Event Management", short:"Event Mgmt", lead:"Hasmitha", leadLabel:"Lead", overseer:"Sohan (President)",
+  members:["Sai Charan K (main person)","Sahithi","Sai Prasanna Yampalli","M. Sahasra Reddy"],
+  tasks:[
+   "Sai Charan K: run the event flow — rules for each stage, what teams submit (GitHub link, demo video, deployed link), deadlines and judging criteria. Also helps Sponsorship.",
+   "Sahithi and Sai Prasanna: prepare the problem statements with Training (partner ones if they come in, backups otherwise); line up judges and mentors.",
+   "Hasmitha: check in with every team at 6 PM and 10 PM today and flag anyone who is stuck."
+  ],
+  today:"Check-ins with every team lead at 6 PM and 10 PM; plan for Sunday at the 10 PM check-in.",
+  coordinatesWith:[{team:"Every team",forWhat:"check-ins, flow and announcements"}]},
+ {id:"spon", name:"Sponsorship", short:"Sponsorship", lead:"Daniyal Solkar", leadLabel:"Main person", overseer:"Sohan (President) — directly",
+  members:["Daniyal Solkar (main person)","Sai Charan K (support)","Sohan Soma"],
+  tasks:[
+   "Keep calling and messaging cash sponsors using the hiring-companies and hackathon-sponsor lead sheets — start with UptoSkills, CredX, RentPrompts, Innodatatics and SafeCloak.",
+   "Update the Sponsor Tracker after every call.",
+   "Inbound outreach: Daniyal posts on LinkedIn from his own account (reshared by X-Kernel, Sohan and every lead) announcing the event, our 100+ registered teams, the Unstop link and a sponsor link (Google Form from Documentation). Template below.",
+   "Reshare the post every 2–3 days with updated registration numbers from Manvita.",
+   "Every form response goes into the Sponsor Tracker, and someone replies within the same day.",
+   "If a sponsor confirms: send Documentation the details for the MOU, send Design their logo and let Manvita add it to Unstop.",
+   "Never promise anything we can't deliver. Check with the Coordinator first."
+  ],
+  today:"Keep calling (UptoSkills first) and get the LinkedIn sponsor post live.",
+  coordinatesWith:[{team:"Sohan",forWhat:"approvals"},{team:"Documentation",forWhat:"Sponsor Tracker, MOUs, sponsor form"},{team:"Design",forWhat:"sponsor logos and shoutouts"},{team:"Publicity",forWhat:"sponsor shoutouts"}]},
+ {id:"web", name:"Web Development", short:"Web Dev", lead:"Raga Vyshnavi", leadLabel:"Lead", overseer:"Sohan (President) — directly",
+  members:["Venkata Karthik Narakuchi","Gorre Sathwik Reddy","Yarra Rishitha"],
+  tasks:[
+   "Continue with the work already assigned (the event website).",
+   "Make sure every Register button links to Unstop and the site works on mobile.",
+   "Share the live link with Publicity as soon as it's up."
+  ],
+  today:"Keep building; share the live link with Publicity as soon as it's up.",
+  coordinatesWith:[{team:"Design",forWhat:"style"},{team:"Publicity",forWhat:"the live link"},{team:"Manvita (Database)",forWhat:"Unstop details"}]},
+ {id:"train", name:"Training", short:"Training", lead:"Hima Bindu", leadLabel:"Lead", overseer:"Hasmitha (Event Mgmt)",
+  members:["Shashank Reddy","Dantrala Jagath Manotej","Charan Mandati","Abhiram Pogaku"],
+  note:"Equal roles.",
+  tasks:[
+   "Shashank and Jagath: help Event Mgmt write and test the problem statements and the judging rubric.",
+   "Charan and Abhiram: plan a short kickoff/orientation session for participants on 12 Oct (format, rounds, tips), and run the doubts channel during the Build stage.",
+   "Help other teams if they need people, for example CR outreach tonight."
+  ],
+  today:"Start on problem statements + rubric and the 12 Oct orientation plan; help CR outreach tonight if needed.",
+  coordinatesWith:[{team:"Event Management",forWhat:"problem statements, rubric, orientation"},{team:"Help Desk",forWhat:"tech doubts / doubts channel"}]}
+];
+
+/* people: teams = [{id, role}] */
+const PEOPLE = [
+ // Leadership
+ {name:"Sohan Soma", aliases:["Sohan","President"], teams:[{id:"spon",role:"With Sponsorship (President)"},{id:"web",role:"Directly coordinates"}],
+  personal:["Overall owner of Code Kernel '26.","Approves the abstract and the prize pool (confirm ₹20,000 pool and ₹300 fee before the abstract is submitted).","Directly coordinates Sponsorship and Web Development.","Reshares Daniyal's LinkedIn sponsor post.","Receives the abstract draft by 3 PM and the first registration count from Database."],
+  title:"President"},
+ {name:"Manoj", aliases:["VP"], teams:[], oversees:["pub","design","cr"], title:"Vice President",
+  personal:["Owns publicity, design and CR outreach.","Signs off on posters and reels before they go out.","Reshares the LinkedIn sponsor post."]},
+ {name:"Ajasra", aliases:["GS"], teams:[], oversees:["doc","db","hd"], title:"General Secretary",
+  personal:["Owns documentation, database and the help desk.","Chases the abstract signatures (Coordinator today; DSA and Principal first thing Monday).","Reshares the LinkedIn sponsor post."]},
+ {name:"Hasmitha", aliases:[], teams:[{id:"em",role:"Lead"}], oversees:["train"], title:"Event Mgmt Lead · Central coordinator",
+  personal:["Central coordinator: check in with every team lead at 6 PM and 10 PM today and flag anyone who is stuck.","Receives the first registration count from Database and CR outreach progress from Harihara Sai.","Training reports to you.","Go-to person for anyone who finishes early or gets stuck."]},
+ // Documentation
+ {name:"Lahari", teams:[{id:"doc",role:"Lead"}], personal:["Lead the abstract draft — to Sohan by 3 PM — then start the signature chase.","Make sure the Sponsor Tracker, MOU template, sponsor Google Form and shared folder are set up."]},
+ {name:"M. Siddharth", aliases:["Siddharth","Sidharth"], teams:[{id:"doc",role:"Member (moved from Logistics)"}], personal:["Moved fully to Documentation (Logistics isn't needed for an online event). Work on the team's tasks with Lahari."]},
+ {name:"Kedar Aryan", aliases:["Kedar"], teams:[{id:"doc",role:"Member (moved from Logistics)"}], personal:["Moved fully to Documentation (Logistics isn't needed for an online event). Work on the team's tasks with Lahari."]},
+ {name:"Arne Rama Thulasi", aliases:["Rama Thulasi","Tulasi","Thulasi"], teams:[{id:"doc",role:"Member"},{id:"design",role:"Member"}], personal:["Design: make the sponsor shoutout template and the certificate template (with space for partner logos).","Documentation: help with the team's tasks with Lahari.","Add 5–10 inspirations to the mood board by 3 PM."]},
+ // Database
+ {name:"Koteshwar", aliases:["Koteswar"], teams:[{id:"db",role:"Lead"}], personal:["Lead Database: Bhavana and Gnaneshwar handle registration and submission data under you.","Make sure every Unstop field is correct and the first registration count reaches Sohan and Hasmitha."]},
+ {name:"Manvita Hamsini", aliases:["Manvitha","Manvita"], teams:[{id:"db",role:"Unstop page owner"}], personal:["Own the Unstop page: keep the details, FAQs, timeline, prizes and partner logos up to date.","Send a daily registration count at 9 PM (first one today to Sohan and Hasmitha).","Add the Help Desk's community invite link to Unstop.","Add sponsor logos to Unstop when a sponsor confirms.","Give Sponsorship updated registration numbers for the LinkedIn reshare every 2–3 days.","Give Web Dev the Unstop details."]},
+ {name:"Bhavana Singh", aliases:["Bhavana"], teams:[{id:"db",role:"Member"}], personal:["Keep a registration sheet exported from Unstop (team, college, city, contact).","Spot which colleges are and aren't registering, and share it with Publicity."]},
+ {name:"Gnaneshwar Chepuri", aliases:["Gyaneshwar","Gnaneswar","Gyaneswar","Gnaneshwar"], teams:[{id:"db",role:"Member"}], personal:["Track submissions and the round shortlists once the event starts.","Give the Help Desk the list of teams to add to the community."]},
+ {name:"Manish Bollikonda", aliases:["Manish"], teams:[{id:"db",role:"Member"}], personal:["Support the others in Database.","Build the paid-team list once the Round 2 fee is approved."]},
+ // Design
+ {name:"Shreyas", teams:[{id:"design",role:"Lead"}], personal:["Run the mood board by 3 PM and pick the final style with Saveri.","Make sure the main poster and WhatsApp poster are ready by 7 PM and the reel is out by Sunday."]},
+ {name:"Saveri", aliases:["Saveri Arts"], teams:[{id:"design",role:"Arts Lead (mood board)"}], title:"Arts Lead", personal:["Help with the mood board and pick the final style with Shreyas by 3 PM."]},
+ {name:"Sai Pavan", aliases:["Sri Sai Pavan Yalamanchi","Pavan","Sai Pawan","Yalamanchi"], teams:[{id:"design",role:"Main person"},{id:"pub",role:"Leads with Divya"}],
+  personal:["Design: make the launch reel (out by Sunday), working with Publicity on the script and format, plus the overall look.","Publicity: work with Divya on the content plan and the reel concept. Share reel ideas and formats with the leads by 3 PM.","Add 5–10 inspirations to the mood board by 3 PM."]},
+ {name:"Voruganti Puneeth", aliases:["Puneeth","Puneet"], teams:[{id:"design",role:"Member"}], personal:["Make the main poster (feed and story sizes) — ready by 7 PM.","Add 5–10 inspirations to the mood board by 3 PM."]},
+ {name:"Palla Harshavardhan", aliases:["Harshavardhan","Harsha"], teams:[{id:"design",role:"Member"}], personal:["Make the countdown series (3 days, 2 days, 1 day, \"Live now\").","Add 5–10 inspirations to the mood board by 3 PM."]},
+ {name:"K. Elia", aliases:["Elia"], teams:[{id:"design",role:"Member"}], personal:["Make the WhatsApp and CR poster: a simple vertical poster with a QR code to Unstop — ready by 7 PM.","Add 5–10 inspirations to the mood board by 3 PM."]},
+ // Publicity
+ {name:"Divya", teams:[{id:"pub",role:"Lead"}], personal:["Lead Publicity; work with Sai Pavan on the content plan and the reel concept.","Get the announcement on Instagram and LinkedIn by evening and the WhatsApp message to every group."]},
+ {name:"Sahiti", teams:[{id:"pub",role:"Member"}], personal:["Write the captions and post copy for Instagram and LinkedIn, plus the WhatsApp message (with Sannidhi)."]},
+ {name:"M. Sannidhi", aliases:["Sannidhi"], teams:[{id:"pub",role:"Member"}], personal:["Write the captions and post copy for Instagram and LinkedIn, plus the WhatsApp message (with Sahiti)."]},
+ {name:"G. Dinesh", aliases:["Dinesh"], teams:[{id:"pub",role:"Member"}], personal:["Distribution (with Snehin): list every channel — college WhatsApp groups, other clubs at GRIET and other colleges, LinkedIn, Instagram collabs and Unstop sharing."]},
+ {name:"M. Snehin Yadav", aliases:["Snehin"], teams:[{id:"pub",role:"Member"}], personal:["Distribution (with Dinesh): list every channel — college WhatsApp groups, other clubs at GRIET and other colleges, LinkedIn, Instagram collabs and Unstop sharing."]},
+ {name:"M. Sahasra Reddy", aliases:["Sahasra"], teams:[{id:"pub",role:"Member"},{id:"em",role:"Member"}], personal:["Link Publicity with Event Management for the CR outreach."]},
+ // CR Outreach
+ {name:"V. Harihara Sai", aliases:["Harihara","Harihara Sai","Hari"], teams:[{id:"cr",role:"Owner"}], title:"Logistics Lead → CR Outreach owner", personal:["Run the new CR Outreach squad (Logistics has no work this event).","Full CR list by 6 PM, every message sent by 9 PM; report progress to Hasmitha."]},
+ {name:"A. Raghuram Varma", aliases:["Raghuram"], teams:[{id:"cr",role:"Member"}], personal:["Work the CR Outreach tasks with Harihara Sai: collect CR contacts, send the message and poster, track who confirmed."]},
+ {name:"Sarikonda Naga Badri Bhatt", aliases:["Badri"], teams:[{id:"cr",role:"Member"}], personal:["Work the CR Outreach tasks with Harihara Sai: collect CR contacts, send the message and poster, track who confirmed."]},
+ {name:"Nakka Vaishnavi", aliases:["Vaishnavi"], teams:[{id:"cr",role:"Member"}], personal:["Work the CR Outreach tasks with Harihara Sai: collect CR contacts, send the message and poster, track who confirmed."]},
+ {name:"M. Keerthana", aliases:["Keerthana"], teams:[{id:"cr",role:"Member"}], personal:["Work the CR Outreach tasks with Harihara Sai: collect CR contacts, send the message and poster, track who confirmed."]},
+ {name:"Harshitha Bangaru", aliases:["Harshitha"], teams:[{id:"cr",role:"Member"}], personal:["Work the CR Outreach tasks with Harihara Sai: collect CR contacts, send the message and poster, track who confirmed."]},
+ // Help desk
+ {name:"Gera Gladson", aliases:["Gladson"], teams:[{id:"hd",role:"Owner"}], title:"Help Desk owner", personal:["Own the Help Desk and participant management.","Set up the participant community (Discord, WhatsApp Community as backup) and get the invite link on Unstop through Manvita today.","Make sure participant questions get answered within an hour, 9 AM–11 PM."]},
+ {name:"J. Pushkar", aliases:["Pushkar"], teams:[{id:"hd",role:"Member"}], personal:["Help Desk tasks with Gladson: community setup, FAQ, answering participant questions."]},
+ {name:"Guduru Rohan", aliases:["Rohan"], teams:[{id:"hd",role:"Member"}], personal:["Help Desk tasks with Gladson: community setup, FAQ, answering participant questions."]},
+ {name:"Sai Charan", aliases:[], teams:[{id:"hd",role:"Member"}], personal:["Help Desk tasks with Gladson: community setup, FAQ, answering participant questions."], note:"Help Desk Sai Charan (not Sai Charan K)."},
+ {name:"Vyshnavi R", aliases:["Vyshnavi"], teams:[{id:"hd",role:"Member"}], personal:["Help Desk tasks with Gladson: community setup, FAQ, answering participant questions."]},
+ // Event mgmt
+ {name:"Sai Charan K", aliases:["Saicharan K"], teams:[{id:"em",role:"Main person"},{id:"spon",role:"Support"}], personal:["Run the event flow: finalize the rules for each stage, what teams submit (GitHub link, demo video, deployed link), the deadlines and the judging criteria.","Help Daniyal with Sponsorship."]},
+ {name:"Sahithi", teams:[{id:"em",role:"Member"}], personal:["Prepare the problem statements with Sai Prasanna and the Training team (partner ones if they come in, backups otherwise).","Line up the judges and mentors."]},
+ {name:"Sai Prasanna Yampalli", aliases:["Sai Prasanna","Prasanna"], teams:[{id:"em",role:"Member"}], personal:["Prepare the problem statements with Sahithi and the Training team (partner ones if they come in, backups otherwise).","Line up the judges and mentors."]},
+ // Sponsorship
+ {name:"Daniyal Solkar", aliases:["Daniel","Daniyal","Daniel Solkar","Danial","Solker"], teams:[{id:"spon",role:"Main person"},{id:"pub",role:"Member (mainly Sponsorship)"}], personal:["Keep calling and messaging cash sponsors — start with UptoSkills, CredX, RentPrompts, Innodatatics and SafeCloak.","Post the LinkedIn sponsor post from your own account (template below); reshare every 2–3 days with Manvita's latest numbers.","Update the Sponsor Tracker after every call; reply to every form response the same day."]},
+ // Web Dev
+ {name:"Raga Vyshnavi", aliases:["Raga"], teams:[{id:"web",role:"Lead"}], personal:["Lead Web Dev on the event website; make sure Register buttons go to Unstop and it works on mobile.","Share the live link with Publicity as soon as it's up."]},
+ {name:"Venkata Karthik Narakuchi", aliases:["Karthik","Venkata Karthik","Kartik"], teams:[{id:"web",role:"Member"}], personal:["Continue the event website work already assigned; every Register button → Unstop; check it on mobile."]},
+ {name:"Gorre Sathwik Reddy", aliases:["Sadhvik","Sathwik","Sathvik","Satwik"], teams:[{id:"web",role:"Member"}], personal:["Continue the event website work already assigned; every Register button → Unstop; check it on mobile."]},
+ {name:"Yarra Rishitha", aliases:["Rishitha"], teams:[{id:"web",role:"Member"}], personal:["Help Karthik and Sathwik with the event website; every Register button → Unstop; check it on mobile."]},
+ // Training
+ {name:"Hima Bindu", aliases:["Bindu"], teams:[{id:"train",role:"Lead"}], personal:["Lead Training (equal roles); make sure problem statements, rubric, orientation and the doubts channel are covered.","Lend people to other teams if needed (e.g. CR outreach tonight)."]},
+ {name:"Shashank Reddy", aliases:["Shashank"], teams:[{id:"train",role:"Member"}], personal:["Help Event Mgmt write and test the problem statements and the judging rubric (with Jagath)."]},
+ {name:"Dantrala Jagath Manotej", aliases:["Jagath","Manotej"], teams:[{id:"train",role:"Member"}], personal:["Help Event Mgmt write and test the problem statements and the judging rubric (with Shashank)."]},
+ {name:"Charan Mandati", aliases:["Charan"], teams:[{id:"train",role:"Member"}], personal:["Plan a short kickoff/orientation session for participants on 12 Oct (format, rounds, tips) with Abhiram.","Run the doubts channel during the Build stage."]},
+ {name:"Abhiram Pogaku", aliases:["Abhiram"], teams:[{id:"train",role:"Member"}], personal:["Plan a short kickoff/orientation session for participants on 12 Oct (format, rounds, tips) with Charan.","Run the doubts channel during the Build stage."]}
+];
+
+const OVERSEERS = [
+ {who:"Sohan Soma", role:"President", text:"Overall owner. Approves the abstract and the prize pool. Directly coordinates Sponsorship and Web Development.", ids:["spon","web","em"]},
+ {who:"Manoj", role:"VP", text:"Owns publicity, design and CR outreach. Signs off on posters and reels before they go out.", ids:["pub","design","cr"]},
+ {who:"Ajasra", role:"GS", text:"Owns documentation, database and the help desk. Chases the abstract signatures.", ids:["doc","db","hd"]},
+ {who:"Hasmitha", role:"Event Mgmt Lead", text:"Central coordinator. Checks in with every team lead at 6 PM and 10 PM today. Training reports here.", ids:["em","train"]}
+];
+
+const GOTO = [
+ ["Need a poster, reel or creative","Design — Shreyas / Sai Pavan (main poster: Puneeth · WhatsApp poster: Elia · countdown: Harshavardhan)"],
+ ["Poster or reel ready to go out","Manoj (VP) for sign-off first"],
+ ["Need captions or post copy","Publicity — Sahiti & Sannidhi"],
+ ["Need the WhatsApp message / poster for CRs","Publicity (Divya) + Design (Elia's poster)"],
+ ["Need registration numbers","Database — Manvita (daily count at 9 PM)"],
+ ["Which colleges to push","Database — Bhavana (registration sheet)"],
+ ["Need something on Unstop (logo, invite link, FAQ, details)","Manvita (Unstop page owner)"],
+ ["Need the participant list for the community","Database — Gnaneshwar"],
+ ["Sponsor confirmed","Documentation (Lahari) for the MOU + Design for the logo + Manvita to add it to Unstop"],
+ ["Sponsor lead / sponsor form response","Sponsorship — Daniyal (Sai Charan K supports); log it in the Sponsor Tracker"],
+ ["Participant question","Help Desk — Gladson"],
+ ["Tech doubt from a participant","Training — Charan & Abhiram (doubts channel)"],
+ ["Rules, submissions, deadlines, judging criteria","Event Mgmt — Sai Charan K"],
+ ["Problem statements & judging rubric","Event Mgmt (Sahithi, Sai Prasanna) + Training (Shashank, Jagath)"],
+ ["Event website / live link","Web Dev — Raga Vyshnavi"],
+ ["Abstract approval, prize pool, fee","Sohan"],
+ ["Abstract signatures","Documentation (Lahari) + Ajasra"],
+ ["Finished early or stuck","Your lead or Hasmitha — we'll move you where help is needed"]
+];
+
+const TREE = [
+ {who:"Sohan — President", kids:["Hasmitha — Event Mgmt","Sponsorship — Daniyal","Web Dev — Raga Vyshnavi"]},
+ {who:"Manoj — VP", kids:["Publicity — Divya + Sai Pavan","Design — Shreyas + Sai Pavan","CR Outreach — Harihara"]},
+ {who:"Ajasra — GS", kids:["Documentation — Lahari","Database — Koteshwar + Manvita","Help Desk — Gladson"]},
+ {who:"Hasmitha — Event Mgmt", kids:["Training — Hima Bindu","Check-ins with every team (6 PM, 10 PM)"]}
+];
+const PAIRS = [["Design","Publicity"],["Publicity","CR Outreach"],["Database","Help Desk"],["Sponsorship","Documentation"]];
+
+const TIMELINE = [
+ ["1:30 PM","Post this plan and the briefing in the EB and Crew groups"],
+ ["2:00 PM","20-min kickoff call: leads brief their new recruits"],
+ ["3:00 PM","Mood boards and reel ideas shared; abstract draft to Sohan"],
+ ["6:00 PM","Check-in 1 with Hasmitha; CR list ready"],
+ ["7:00 PM","Main poster and WhatsApp poster final; abstract with the Coordinator"],
+ ["8:00 PM","Social posts live; WhatsApp and CR messages start going out; Discord live"],
+ ["9:00 PM","First registration count from Manvita"],
+ ["10:00 PM","Check-in 2; plan for Sunday"]
+];
+
+const WA = `🚀 *Code Kernel '26 is here!*
+X-Kernel, GRIET presents an online national problem-solving challenge on Unstop.
+🧩 Decode a real problem → 🛠️ Build a solution → ✅ Prove it works
+📅 12–21 Oct · 💻 Fully online · Open to all colleges and branches
+🏆 Cash prizes, internship opportunities and certificates for everyone
+Register now: [Unstop link]
+Form your team and share with your friends!`;
+
+const LI = `🚀 100+ teams have already registered for Code Kernel '26!
+
+X-Kernel, the tech club at GRIET Hyderabad, is running Code Kernel '26, an online national problem-solving challenge on Unstop from 12 to 21 October.
+
+Teams from colleges across India will:
+🧩 Decode a real-world problem
+🛠️ Build a working solution
+✅ Prove it with a live demo
+
+🎓 Students: there's still time to join → [Unstop link]
+
+🤝 Companies and startups: want to get your brand in front of hundreds of student builders, set a real problem statement, or spot talent for hiring? Partner with us → [Sponsor form link]
+
+Know someone who'd be a great fit? Tag them or share this post 🙌
+
+#CodeKernel26 #XKernel #GRIET #Hackathon #Unstop #Sponsorship`;
+
+/* ============ HELPERS ============ */
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const teamById = id => TEAMS.find(t => t.id === id);
+const tname = t => t.short || t.name;
+
+/* ============ PEOPLE-TO-PEOPLE LINKS (derived from the md) ============ */
+// Groups doing the same work together
+const WORKGROUPS = [
+ {names:["Sahiti","M. Sannidhi"], why:"Write captions + post copy (Instagram, LinkedIn) and the WhatsApp message together"},
+ {names:["G. Dinesh","M. Snehin Yadav"], why:"Distribution together: list and cover every channel"},
+ {names:["Sahithi","Sai Prasanna Yampalli","Shashank Reddy","Dantrala Jagath Manotej"], why:"Problem statements: Event Mgmt prepares them, Training helps write and test them (plus the judging rubric)"},
+ {names:["Sahithi","Sai Prasanna Yampalli"], why:"Problem statements + lining up judges and mentors together"},
+ {names:["Shashank Reddy","Dantrala Jagath Manotej"], why:"Write and test problem statements + judging rubric together"},
+ {names:["Charan Mandati","Abhiram Pogaku"], why:"Plan the 12 Oct participant orientation + run the Build-stage doubts channel together"},
+ {names:["Raga Vyshnavi","Venkata Karthik Narakuchi","Gorre Sathwik Reddy","Yarra Rishitha"], why:"Build the event website together (Register buttons → Unstop, works on mobile)"},
+ {names:["Shreyas","Saveri"], why:"Run the mood board and pick the final style together (by 3 PM)"},
+ {names:["Sai Pavan","Divya"], why:"Content plan + reel concept together; reel ideas to the leads by 3 PM"},
+ {names:["Gera Gladson","J. Pushkar","Guduru Rohan","Sai Charan","Vyshnavi R"], why:"Help Desk: participant community (Discord), FAQ, answering questions 9 AM–11 PM"},
+ {names:["V. Harihara Sai","A. Raghuram Varma","Sarikonda Naga Badri Bhatt","Nakka Vaishnavi","M. Keerthana","Harshitha Bangaru"], why:"CR outreach: CR list by 6 PM, every CR messaged by 9 PM, tracking sheet"},
+ {names:["Daniyal Solkar","Sai Charan K","Sohan Soma"], why:"Sponsorship: calling cash sponsors, LinkedIn sponsor post, Sponsor Tracker"},
+ {names:["Lahari","M. Siddharth","Kedar Aryan","Arne Rama Thulasi"], why:"Documentation: abstract, Sponsor Tracker, MOU template, sponsor form, shared folder"}
+];
+// Cross-person hand-offs: [a(s), b(s), why] — shown on both people's cards
+const LINKS = [
+ // Documentation
+ ["Lahari","Sohan Soma","Abstract draft for review by 3 PM; confirm ₹20K pool + ₹300 fee before submitting"],
+ ["Lahari","Ajasra","Abstract signature chase (Coordinator today; DSA + Principal Monday)"],
+ [["Lahari","M. Siddharth","Kedar Aryan"],"Manvita Hamsini","Registration numbers (expected participants) for the abstract"],
+ [["Lahari","M. Siddharth","Kedar Aryan"],"Bhavana Singh","Registration list for the abstract and the shared folder"],
+ [["Lahari","M. Siddharth","Kedar Aryan"],"Daniyal Solkar","Sponsor Tracker, sponsor Google Form, MOU details when a sponsor confirms"],
+ // Database
+ ["Manvita Hamsini","Sohan Soma","Registration count (first one today, then daily at 9 PM)"],
+ ["Manvita Hamsini","Hasmitha","Registration count (first one today, then daily at 9 PM)"],
+ ["Manvita Hamsini","Gera Gladson","Gladson sends the community invite link → Manvita adds it to Unstop"],
+ ["Manvita Hamsini","Daniyal Solkar","Confirmed sponsors' logos → Unstop; updated registration numbers for the LinkedIn reshare"],
+ ["Manvita Hamsini",["Raga Vyshnavi","Venkata Karthik Narakuchi","Gorre Sathwik Reddy","Yarra Rishitha"],"Unstop details/link for the website's Register buttons"],
+ ["Bhavana Singh",["Divya","G. Dinesh","M. Snehin Yadav"],"Which colleges are / aren't registering → who Publicity should target"],
+ ["Gnaneshwar Chepuri","Gera Gladson","Participant/team lists → Help Desk adds them to the community"],
+ ["Koteshwar","Sohan Soma","First registration count today"],
+ // Design
+ ["Sai Pavan",["Sahiti","M. Sannidhi"],"Reel script and format with the Publicity copywriters"],
+ [["Sai Pavan","Voruganti Puneeth","K. Elia","Palla Harshavardhan","Shreyas"],"Manoj","Sign-off on posters and reels before they go out"],
+ [["Voruganti Puneeth","K. Elia","Palla Harshavardhan"],["Sahiti","M. Sannidhi"],"Text and captions for your creatives"],
+ ["Voruganti Puneeth",["G. Dinesh","M. Snehin Yadav"],"Main poster (ready by 7 PM) → Publicity sends it out tonight"],
+ ["K. Elia",["G. Dinesh","M. Snehin Yadav"],"WhatsApp poster (ready by 7 PM) → Publicity sends it to every group tonight"],
+ ["Palla Harshavardhan",["G. Dinesh","M. Snehin Yadav"],"Countdown series (3 days, 2 days, 1 day, Live now) for distribution"],
+ ["K. Elia","V. Harihara Sai","WhatsApp/CR poster (QR to Unstop) → CR outreach squad sends it to every CR"],
+ ["Arne Rama Thulasi","Daniyal Solkar","Sponsor logos for the sponsor shoutout and certificate templates"],
+ ["Shreyas","Daniyal Solkar","Sponsor logos"],
+ ["Shreyas","Raga Vyshnavi","Website style matches the creatives"],
+ // Publicity
+ [["Divya","M. Sahasra Reddy","Sahiti","M. Sannidhi"],"V. Harihara Sai","WhatsApp message + poster for the CRs"],
+ ["M. Sahasra Reddy",["A. Raghuram Varma","Sarikonda Naga Badri Bhatt","Nakka Vaishnavi","M. Keerthana","Harshitha Bangaru"],"Sahasra links Publicity with the CR outreach (message and poster)"],
+ ["Divya","Raga Vyshnavi","Live website link to share as soon as it's up"],
+ ["Divya","Daniyal Solkar","Sponsor shoutouts"],
+ ["Divya","Manoj","Publicity oversight and sign-off"],
+ // CR outreach
+ ["V. Harihara Sai","Hasmitha","Progress updates (CR list by 6 PM, messages by 9 PM)"],
+ ["V. Harihara Sai","Manoj","CR outreach oversight"],
+ ["V. Harihara Sai","Hima Bindu","Training can lend people for CR outreach tonight"],
+ // Help desk
+ [["Gera Gladson","J. Pushkar","Guduru Rohan","Sai Charan","Vyshnavi R"],["Charan Mandati","Abhiram Pogaku"],"Tech doubts from participants → Training's doubts channel"],
+ ["Gera Gladson","Sai Charan K","Rules, submissions and deadlines for the FAQ and announcements"],
+ ["Gera Gladson","Ajasra","Help Desk oversight"],
+ // Event Mgmt
+ ["Sai Charan K",["Shashank Reddy","Dantrala Jagath Manotej"],"Judging criteria ↔ judging rubric"],
+ ["Sai Charan K",["Charan Mandati","Abhiram Pogaku"],"Rules, rounds and format for the 12 Oct orientation"],
+ [["Sahithi","Sai Prasanna Yampalli"],"Daniyal Solkar","Partner problem statements if sponsors send them"],
+ ["Hasmitha","Hima Bindu","Training reports to Hasmitha"],
+ ["Hasmitha","Sohan Soma","Overall coordination"],
+ // Sponsorship / web / oversight
+ ["Daniyal Solkar","Sohan Soma","Approvals; Sohan directly coordinates Sponsorship"],
+ ["Raga Vyshnavi","Sohan Soma","Sohan directly coordinates Web Dev"],
+ ["Lahari","Hasmitha","6 PM / 10 PM check-ins"],["Koteshwar","Hasmitha","6 PM / 10 PM check-ins"],["Shreyas","Hasmitha","6 PM / 10 PM check-ins"],
+ ["Divya","Hasmitha","6 PM / 10 PM check-ins"],["Gera Gladson","Hasmitha","6 PM / 10 PM check-ins"],["Daniyal Solkar","Hasmitha","6 PM / 10 PM check-ins"],
+ ["Raga Vyshnavi","Hasmitha","6 PM / 10 PM check-ins"],
+ ["Koteshwar","Ajasra","Database oversight"],["Lahari","Ajasra","Documentation oversight"],["Shreyas","Manoj","Design oversight"],
+ ["Manoj","Ajasra","Fellow overseers (Manoj: publicity side · Ajasra: docs/data/help desk)"],
+ ["Sohan Soma",["Manoj","Ajasra"],"Overall owner ↔ overseers"]
+];
+const PEOPLE_BY_NAME = {};
+const arr = x => Array.isArray(x) ? x : [x];
+function personLabel(name){
+  const p = PEOPLE_BY_NAME[name]; if (!p) return "";
+  const t = p.teams.map(x => tname(teamById(x.id)));
+  if (p.title && !t.length) return p.title;
+  return t.join(" + ") || p.title || "";
+}
+function teamMemberNames(T){
+  const s = new Set([T.lead, ...T.members.map(m => m.replace(/\s*\(.*\)$/,""))]);
+  return [...s];
+}
+// Build map name -> Map(otherName -> [reasons])
+const WITH = {};
+function addWith(a,b,why){
+  if (a===b) return;
+  WITH[a] = WITH[a] || new Map();
+  const m = WITH[a]; if (!m.has(b)) m.set(b,{why:[],kind:9});
+  const e = m.get(b); if (!e.why.includes(why)) e.why.push(why);
+  return e;
+}
+function buildWith(){
+  PEOPLE.forEach(p => PEOPLE_BY_NAME[p.name] = p);
+  WORKGROUPS.forEach(g => g.names.forEach(a => g.names.forEach(b => { const e=addWith(a,b,g.why); if(e) e.kind=Math.min(e.kind,1); })));
+  LINKS.forEach(([A,B,why]) => arr(A).forEach(a => arr(B).forEach(b => {
+    const e1=addWith(a,b,why); if(e1) e1.kind=Math.min(e1.kind,2);
+    const e2=addWith(b,a,why); if(e2) e2.kind=Math.min(e2.kind,2);
+  })));
+  // everyone in your team(s)
+  TEAMS.forEach(T => { const ns = teamMemberNames(T);
+    ns.forEach(a => ns.forEach(b => { if (a===b) return;
+      const role = b===T.lead ? `${T.leadLabel} of ${tname(T)}` : `Teammate in ${tname(T)}`;
+      const ex = WITH[a] && WITH[a].get(b);
+      if (ex) { if (!ex.role) ex.role = role; }
+      else { const e = addWith(a,b,role); e.kind = 3; e.role = role; e.why = []; }
+    }));
+  });
+  const bad = [];
+  for (const [a,m] of Object.entries(WITH)) { if (!PEOPLE_BY_NAME[a]) bad.push(a); for (const b of m.keys()) if (!PEOPLE_BY_NAME[b]) bad.push(b); }
+  if (bad.length) console.error("Unknown names in links:", [...new Set(bad)]);
+}
+function withList(name){
+  const m = WITH[name]; if (!m) return [];
+  return [...m.entries()].map(([n,e]) => ({name:n, team:personLabel(n), why:e.why, role:e.role, kind:e.kind}))
+    .sort((x,y) => x.kind-y.kind || x.name.localeCompare(y.name));
+}
+function withHTML(name){
+  const L = withList(name); if (!L.length) return "";
+  return `<div class="label">People you work with (${L.length})</div><ul class="pw">${L.map(x=>`<li>
+    <button class="member" data-person="${esc(x.name)}">${esc(x.name)}</button>
+    <span class="pw-team">${esc(x.team)}${x.role && !x.role.startsWith("Teammate")?` · ${esc(x.role)}`:""}</span>
+    <span class="pw-why">${x.why.length ? x.why.map(esc).join(" · ") : esc(x.role||"")}</span></li>`).join("")}</ul>`;
+}
+// Team card: named people outside the team that members work with
+function teamWithHTML(T, full){
+  const inside = new Set(teamMemberNames(T));
+  const out = new Map();
+  for (const a of inside){ const m = WITH[a]; if (!m) continue;
+    for (const [b,e] of m){ if (inside.has(b) || e.kind===3) continue;
+      if (!out.has(b)) out.set(b, new Map());
+      e.why.forEach(w => { const o=out.get(b); if(!o.has(w)) o.set(w,new Set()); o.get(w).add(a.split(" ").slice(-1)[0]===a?a:a); });
+    }
+  }
+  if (!out.size) return "";
+  const items = [...out.entries()].sort((x,y)=>x[0].localeCompare(y[0])).map(([b,ws]) =>
+    `<li><button class="member" data-person="${esc(b)}">${esc(b)}</button> <span class="pw-team">${esc(personLabel(b))}</span>
+     <span class="pw-why">${[...ws.entries()].map(([w,who])=>`${esc(w)} <small>(with ${esc([...who].join(", "))})</small>`).join(" · ")}</span></li>`).join("");
+  const body = `<ul class="pw">${items}</ul>`;
+  return full ? `<div class="label">Works closely with (${out.size} people)</div>${body}`
+              : `<details class="more"><summary>Works closely with (${out.size} people)</summary>${body}</details>`;
+}
+
+// Simple spelling normalization so "Sathvik"/"Satwik", "Manvitha"/"Manvita", "Vyshnavi"/"Vaishnavi" match.
+function norm(s){
+  let x = String(s).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+  x = x.replace(/[^a-z ]+/g," ");
+  x = x.replace(/([bcdgkpt])h/g,"$1").replace(/sh/g,"s").replace(/w/g,"v")
+       .replace(/ee/g,"i").replace(/oo/g,"u").replace(/y/g,"i").replace(/ai/g,"i")
+       .replace(/(.)\1+/g,"$1").replace(/\s+/g," ").trim();
+  return x;
+}
+PEOPLE.forEach(p => {
+  p.aliases = p.aliases || [];
+  p._raw = [p.name, ...p.aliases].join(" | ").toLowerCase();
+  p._norm = [p.name, ...p.aliases].map(norm).join(" | ");
+});
+
+function search(q){
+  q = q.trim();
+  if (q.length < 2) return [];
+  const rawQ = q.toLowerCase().replace(/\s+/g," ");
+  const toks = norm(q).split(" ").filter(Boolean);
+  const scored = [];
+  for (const p of PEOPLE){
+    let score = 0;
+    const names = [p.name, ...p.aliases];
+    for (const n of names){
+      const nl = n.toLowerCase();
+      if (nl === rawQ) score = Math.max(score, 100);
+      else if (nl.split(/[\s.]+/).includes(rawQ)) score = Math.max(score, 80);
+      else if (nl.includes(rawQ)) score = Math.max(score, 60);
+    }
+    if (!score && toks.length && toks.every(t => p._norm.includes(t))) score = 40;
+    if (score) scored.push([score,p]);
+  }
+  scored.sort((a,b)=> b[0]-a[0] || a[1].name.localeCompare(b[1].name));
+  // if there's an exact hit, also keep others (e.g. "Sai Charan" shows both Sai Charans)
+  return scored.map(s => s[1]);
+}
+
+/* ============ RENDER ============ */
+function coordList(list){
+  return `<ul class="coord">${list.map(c=>`<li><span class="arrow">↔</span><span><b>${esc(c.team)}</b> — ${esc(c.forWhat)}</span></li>`).join("")}</ul>`;
+}
+
+function personCard(p){
+  const teamTags = p.teams.map(t=>`<button class="tag" data-team="${t.id}">${esc(tname(teamById(t.id)))} · ${esc(t.role)}</button>`).join("");
+  const overTags = (p.oversees||[]).map(id=>`<button class="tag" data-team="${id}">Oversees ${esc(tname(teamById(id)))}</button>`).join("");
+  const title = p.title ? `<span class="tag role">${esc(p.title)}</span>` : "";
+  let blocks = "";
+  for (const t of p.teams){
+    const T = teamById(t.id);
+    const lead = (T.lead === p.name) ? "You" : T.lead;
+    blocks += `<div class="team-block">
+      <div class="label">${esc(T.name)} — team tasks</div>
+      <ul class="tasks">${T.tasks.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>
+      <div class="deadline"><span class="clock">⏰</span><div><b>Today:</b> ${esc(T.today)}</div></div>
+      <div class="label">Your people</div>
+      <dl class="kv"><dt>${esc(T.leadLabel)}</dt><dd>${esc(lead)}</dd><dt>Overseen by</dt><dd>${esc(T.overseer)}</dd></dl>
+      <div class="label">Coordinate with</div>${coordList(T.coordinatesWith)}
+    </div>`;
+  }
+  for (const id of (p.oversees||[])){
+    const T = teamById(id);
+    blocks += `<div class="team-block"><div class="label">Oversee: ${esc(T.name)} (${esc(T.leadLabel)}: ${esc(T.lead)})</div>
+      <div class="deadline"><span class="clock">⏰</span><div><b>Today:</b> ${esc(T.today)}</div></div></div>`;
+  }
+  return `<article class="card person">
+    <div class="p-head">
+      <div><h3 class="p-name">${esc(p.name)}</h3>${p.note?`<div class="p-sub">${esc(p.note)}</div>`:""}
+        <div class="tags">${title}${teamTags}${overTags}</div></div>
+      <button class="btn solid" data-link="${esc(p.name)}">Copy my link</button>
+    </div>
+    <div class="label">Your work</div>
+    <div class="mine"><ul>${p.personal.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    ${withHTML(p.name)}
+    ${blocks}
+    <p class="hint" style="margin-top:12px">Stuck or done early? Tell your lead or Hasmitha. Anything public needs a lead's sign-off first.</p>
+  </article>`;
+}
+
+function teamCard(T, full){
+  const mem = T.members.map(m=>{
+    const nm = m.replace(/\s*\(.*\)$/,""); const extra = (m.match(/\((.*)\)$/)||[])[1];
+    return `<button class="member" data-person="${esc(nm)}">${esc(nm)}${extra?` <small>(${esc(extra)})</small>`:""}</button>`;
+  }).join("");
+  const tasks = `<ul class="tasks">${T.tasks.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  return `<article class="card team-card" id="team-${T.id}">
+    <div class="num">${String(TEAMS.indexOf(T)+1).padStart(2,"0")} / ${esc(T.overseer)}</div>
+    <h3>${esc(T.name)}</h3>
+    ${T.note?`<p class="hint" style="margin:2px 0 0">${esc(T.note)}</p>`:""}
+    <dl class="kv" style="margin-top:8px"><dt>${esc(T.leadLabel)}</dt><dd><button class="member" data-person="${esc(T.lead)}">${esc(T.lead)}</button></dd></dl>
+    <div class="label">Members</div><div>${mem}</div>
+    <div class="deadline"><span class="clock">⏰</span><div><b>Today:</b> ${esc(T.today)}</div></div>
+    ${full ? `<div class="label">Tasks</div>${tasks}` : `<details class="more"><summary>Tasks</summary>${tasks}</details>`}
+    <div class="label">Coordinates with</div>${coordList(T.coordinatesWith)}
+    ${teamWithHTML(T, full)}
+  </article>`;
+}
+
+function renderStatic(){
+  $("#chips").innerHTML = `<button class="chip on" data-chip="">All</button>` +
+    TEAMS.map(t=>`<button class="chip" data-chip="${t.id}">${esc(tname(t))}</button>`).join("");
+  $("#teamGrid").innerHTML = TEAMS.map(t=>teamCard(t,false)).join("");
+  $("#overGrid").innerHTML = OVERSEERS.map(o=>`<div class="card"><div class="num" style="font-family:var(--mono);font-size:12px;color:var(--blue)">${esc(o.role)}</div>
+    <h3><button class="member" style="font-family:var(--serif);font-style:italic;font-size:24px;background:none;padding:0" data-person="${esc(o.who)}">${esc(o.who)}</button></h3>
+    <p style="margin:6px 0 8px">${esc(o.text)}</p><div class="tags">${o.ids.map(id=>`<button class="tag" data-team="${id}">${esc(tname(teamById(id)))}</button>`).join("")}</div></div>`).join("");
+  $("#gotoGrid").innerHTML = GOTO.map(([n,t])=>`<div class="g"><span class="need">${esc(n)}</span><span class="to">→ ${esc(t)}</span></div>`).join("");
+  $("#tree").innerHTML = TREE.map(n=>`<div class="node"><div class="who">${esc(n.who)}</div>${n.kids.map(k=>`<div class="kid">└─ ${esc(k)}</div>`).join("")}</div>`).join("");
+  $("#pairs").innerHTML = PAIRS.map(([a,b])=>`<span class="pair">${esc(a)} <span class="arrow">⇄</span> ${esc(b)}</span>`).join("");
+  $("#tl").innerHTML = TIMELINE.map(([t,w])=>`<tr><td class="t">${esc(t)}</td><td>${esc(w)}</td></tr>`).join("");
+  $("#wa").textContent = WA; $("#li").textContent = LI;
+}
+
+function setChip(id){
+  document.querySelectorAll(".chip").forEach(c=>c.classList.toggle("on", c.dataset.chip === (id||"")));
+}
+
+function setURL(params){
+  const u = new URL(location.href);
+  u.search = ""; u.hash = "";
+  for (const [k,v] of Object.entries(params)) if (v) u.searchParams.set(k,v);
+  try { history.replaceState(null,"",u.toString()); } catch(e){}
+}
+
+function showSearch(q, updateUrl=true){
+  const res = $("#results");
+  setChip(null);
+  if (!q.trim()){ res.innerHTML=""; setChip(""); if(updateUrl) setURL({}); return; }
+  const hits = search(q);
+  if (updateUrl) setURL({name:q.trim()});
+  if (q.trim().length < 2){ res.innerHTML = ""; return; }
+  if (!hits.length){
+    res.innerHTML = `<div class="empty">No one named “${esc(q)}” in the plan. Try your first name only, or tap your team above. If you're missing, tell your lead or Hasmitha.</div>`;
+    return;
+  }
+  res.innerHTML = `<div class="res-head">${hits.length} match${hits.length>1?"es":""} for “${esc(q)}”</div>` + hits.map(personCard).join("");
+}
+
+function showTeam(id, updateUrl=true){
+  const T = teamById(id); if (!T) return;
+  $("#q").value = "";
+  setChip(id);
+  if (updateUrl) setURL({team:id});
+  $("#results").innerHTML = `<div class="res-head">Team</div>` + teamCard(T,true);
+}
+
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.add("show"); clearTimeout(toast._t); toast._t=setTimeout(()=>t.classList.remove("show"),1800); }
+
+async function copyText(text, btn){
+  let ok = false;
+  try { if (navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); ok = true; } } catch(e){}
+  if (!ok){
+    const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly","");
+    ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select();
+    try { ok = document.execCommand("copy"); } catch(e){}
+    ta.remove();
+  }
+  if (btn){ const old = btn.textContent; btn.textContent = ok ? "Copied ✓" : "Copy failed"; btn.classList.add("done"); setTimeout(()=>{btn.textContent=old;btn.classList.remove("done");},1600); }
+  toast(ok ? "Copied to clipboard" : "Couldn't copy — select and copy manually");
+}
+
+/* ============ EVENTS ============ */
+let deb;
+$("#q").addEventListener("input", e => { clearTimeout(deb); const v=e.target.value; deb=setTimeout(()=>showSearch(v),120); });
+$("#q").addEventListener("keydown", e => { if (e.key==="Enter"){ e.preventDefault(); showSearch(e.target.value); e.target.blur(); }});
+$("#clear").addEventListener("click", () => { $("#q").value=""; showSearch(""); $("#q").focus(); });
+
+document.addEventListener("click", e => {
+  const chip = e.target.closest("[data-chip]");
+  if (chip){ const id = chip.dataset.chip; if (id) showTeam(id); else { $("#q").value=""; showSearch(""); } return; }
+  const tag = e.target.closest("[data-team]");
+  if (tag){ showTeam(tag.dataset.team); window.scrollTo({top:$("#results").offsetTop-150,behavior:"smooth"}); return; }
+  const per = e.target.closest("[data-person]");
+  if (per){ const n = per.dataset.person; $("#q").value = n; showSearch(n); window.scrollTo({top:$("#results").offsetTop-150,behavior:"smooth"}); return; }
+  const link = e.target.closest("[data-link]");
+  if (link){ const u = new URL(location.href); u.search=""; u.hash=""; u.searchParams.set("name", link.dataset.link); copyText(u.toString(), link); return; }
+  const cp = e.target.closest("[data-copy]");
+  if (cp){ copyText(cp.dataset.copy==="wa"?WA:LI, cp); }
+});
+
+/* ============ INIT ============ */
+buildWith();
+renderStatic();
+(function init(){
+  const sp = new URLSearchParams(location.search);
+  const hp = new URLSearchParams(location.hash.replace(/^#/,""));
+  let name = sp.get("name") || hp.get("name");
+  const team = sp.get("team") || hp.get("team");
+  if (!name && !team && location.hash.length > 1 && !location.hash.includes("=")){
+    const h = decodeURIComponent(location.hash.slice(1));
+    if (!document.getElementById(h)) name = h;
+  }
+  if (name){ $("#q").value = name; showSearch(name,false); }
+  else if (team){ showTeam(team,false); }
+})();
+</script>
+</body>
+</html>
