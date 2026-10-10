@@ -259,15 +259,16 @@ const TEAMS = [
   today:"Abstract draft to Sohan by 3 PM, then the signature chase (with the Coordinator by 7 PM; DSA + Principal first thing Monday).",
   coordinatesWith:[{team:"Sohan",forWhat:"the abstract"},{team:"Sponsorship",forWhat:"Sponsor Tracker and MOUs"},{team:"Database",forWhat:"registration numbers for the abstract"}]},
  {id:"db", name:"Database & Unstop page", short:"Database", lead:"Koteshwar", leadLabel:"Lead", overseer:"Ajasra (GS)",
-  members:["Manvita Hamsini","Bhavana Singh","Gnaneshwar Chepuri","Manish Bollikonda"],
+  members:["Harini (main person, second-in-command)","Manvita Hamsini","Bhavana Singh","Gnaneshwar Chepuri","Manish Bollikonda"],
   tasks:[
+   "Harini (main person, second-in-command): works directly with Koteshwar and coordinates the Database members' daily work. Pairs with Bhavana on the registration sheet and owns daily registration insights — which colleges, branches and years are and aren't registering — sending a short 'where to push' list every evening by 8 PM to Publicity (Dinesh + Snehin) and CR Outreach (Harihara Sai). Backs up Manvita on the Unstop page and the daily count.",
    "Manvita: owns the Unstop page — details, FAQs, timeline, prizes and partner logos; daily registration count at 9 PM.",
    "Bhavana: registration sheet exported from Unstop (team, college, city, contact); spot which colleges are and aren't registering.",
    "Gnaneshwar: track submissions and round shortlists once the event starts; give the Help Desk the list of teams to add to the community.",
    "Manish: support the others; build the paid-team list once the Round 2 fee is approved."
   ],
   today:"Confirm every Unstop field is correct and send the first registration count to Sohan and Hasmitha (9 PM).",
-  coordinatesWith:[{team:"Publicity",forWhat:"which colleges to push"},{team:"Help Desk",forWhat:"participant lists"},{team:"Documentation",forWhat:"numbers for the abstract"}]},
+  coordinatesWith:[{team:"Publicity",forWhat:"which colleges to push (Harini's 8 PM 'where to push' list)"},{team:"CR Outreach",forWhat:"Harini's 8 PM 'where to push' list"},{team:"Help Desk",forWhat:"participant lists"},{team:"Documentation",forWhat:"numbers for the abstract"}]},
  {id:"design", name:"Design & Video Editing", short:"Design", lead:"Shreyas", leadLabel:"Lead", overseer:"Manoj (VP) — signs off posters & reels",
   members:["Sai Pavan (main person)","Voruganti Puneeth","Palla Harshavardhan","K. Elia","Arne Rama Thulasi","Saveri (Arts Lead, mood board)"],
   tasks:[
@@ -370,7 +371,8 @@ const PEOPLE = [
  {name:"Kedar Aryan", aliases:["Kedar"], teams:[{id:"doc",role:"Member (moved from Logistics)"}], personal:["Moved fully to Documentation (Logistics isn't needed for an online event). Work on the team's tasks with Lahari."]},
  {name:"Arne Rama Thulasi", aliases:["Rama Thulasi","Tulasi","Thulasi"], teams:[{id:"doc",role:"Member"},{id:"design",role:"Member"}], personal:["Design: make the sponsor shoutout template and the certificate template (with space for partner logos).","Documentation: help with the team's tasks with Lahari.","Add 5–10 inspirations to the mood board by 3 PM."]},
  // Database
- {name:"Koteshwar", aliases:["Koteswar"], teams:[{id:"db",role:"Lead"}], personal:["Lead Database: Bhavana and Gnaneshwar handle registration and submission data under you.","Make sure every Unstop field is correct and the first registration count reaches Sohan and Hasmitha."]},
+ {name:"Koteshwar", aliases:["Koteswar"], teams:[{id:"db",role:"Lead"}], personal:["Lead Database: Bhavana and Gnaneshwar handle registration and submission data under you.","Harini is your main person / second-in-command: coordinate the Database members' daily work together.","Make sure every Unstop field is correct and the first registration count reaches Sohan and Hasmitha."]},
+ {name:"Harini", aliases:[], teams:[{id:"db",role:"Main person · second-in-command"}], title:"Database main person", personal:["Main person / second-in-command in Database: work directly with Koteshwar and coordinate the Database members' daily work (Manvita, Bhavana, Gnaneshwar, Manish).","Work as a pair with Bhavana on the registration sheet.","Own daily registration insights: which colleges, branches and years are registering and which aren't.","Every evening by 8 PM, send a short 'where to push' list to Publicity (Dinesh + Snehin, distribution) and the CR Outreach squad (Harihara Sai) so they target the gaps.","Back up Manvita on the Unstop page and the daily registration count."]},
  {name:"Manvita Hamsini", aliases:["Manvitha","Manvita"], teams:[{id:"db",role:"Unstop page owner"}], personal:["Own the Unstop page: keep the details, FAQs, timeline, prizes and partner logos up to date.","Send a daily registration count at 9 PM (first one today to Sohan and Hasmitha).","Add the Help Desk's community invite link to Unstop.","Add sponsor logos to Unstop when a sponsor confirms.","Give Sponsorship updated registration numbers for the LinkedIn reshare every 2–3 days.","Give Web Dev the Unstop details."]},
  {name:"Bhavana Singh", aliases:["Bhavana"], teams:[{id:"db",role:"Member"}], personal:["Keep a registration sheet exported from Unstop (team, college, city, contact).","Spot which colleges are and aren't registering, and share it with Publicity."]},
  {name:"Gnaneshwar Chepuri", aliases:["Gyaneshwar","Gnaneswar","Gyaneswar","Gnaneshwar"], teams:[{id:"db",role:"Member"}], personal:["Track submissions and the round shortlists once the event starts.","Give the Help Desk the list of teams to add to the community."]},
@@ -434,8 +436,8 @@ const GOTO = [
  ["Poster or reel ready to go out","Manoj (VP) for sign-off first"],
  ["Need captions or post copy","Publicity — Sahiti & Sannidhi"],
  ["Need the WhatsApp message / poster for CRs","Publicity (Divya) + Design (Elia's poster)"],
- ["Need registration numbers","Database — Manvita (daily count at 9 PM)"],
- ["Which colleges to push","Database — Bhavana (registration sheet)"],
+ ["Need registration numbers","Database — Manvita (daily count at 9 PM; Harini is backup)"],
+ ["Which colleges / branches / years to push","Database — Harini ('where to push' list by 8 PM) + Bhavana (registration sheet)"],
  ["Need something on Unstop (logo, invite link, FAQ, details)","Manvita (Unstop page owner)"],
  ["Need the participant list for the community","Database — Gnaneshwar"],
  ["Sponsor confirmed","Documentation (Lahari) for the MOU + Design for the logo + Manvita to add it to Unstop"],
@@ -453,7 +455,7 @@ const GOTO = [
 const TREE = [
  {who:"Sohan — President", kids:["Hasmitha — Event Mgmt","Sponsorship — Daniyal","Web Dev — Raga Vyshnavi"]},
  {who:"Manoj — VP", kids:["Publicity — Divya + Sai Pavan","Design — Shreyas + Sai Pavan","CR Outreach — Harihara"]},
- {who:"Ajasra — GS", kids:["Documentation — Lahari","Database — Koteshwar + Manvita","Help Desk — Gladson"]},
+ {who:"Ajasra — GS", kids:["Documentation — Lahari","Database — Koteshwar + Harini + Manvita","Help Desk — Gladson"]},
  {who:"Hasmitha — Event Mgmt", kids:["Training — Hima Bindu","Check-ins with every team (6 PM, 10 PM)"]}
 ];
 const PAIRS = [["Design","Publicity"],["Publicity","CR Outreach"],["Database","Help Desk"],["Sponsorship","Documentation"]];
@@ -503,6 +505,8 @@ const tname = t => t.short || t.name;
 /* ============ PEOPLE-TO-PEOPLE LINKS (derived from the md) ============ */
 // Groups doing the same work together
 const WORKGROUPS = [
+ {names:["Koteshwar","Harini"], why:"Lead + main person: run Database together and coordinate the members' daily work"},
+ {names:["Bhavana Singh","Harini"], why:"Registration sheet together; Harini turns it into daily 'where to push' insights"},
  {names:["Sahiti","M. Sannidhi"], why:"Write captions + post copy (Instagram, LinkedIn) and the WhatsApp message together"},
  {names:["G. Dinesh","M. Snehin Yadav"], why:"Distribution together: list and cover every channel"},
  {names:["Sahithi","Sai Prasanna Yampalli","Shashank Reddy","Dantrala Jagath Manotej"], why:"Problem statements: Event Mgmt prepares them, Training helps write and test them (plus the judging rubric)"},
@@ -532,6 +536,11 @@ const LINKS = [
  ["Manvita Hamsini","Daniyal Solkar","Confirmed sponsors' logos → Unstop; updated registration numbers for the LinkedIn reshare"],
  ["Manvita Hamsini",["Raga Vyshnavi","Venkata Karthik Narakuchi","Gorre Sathwik Reddy","Yarra Rishitha"],"Unstop details/link for the website's Register buttons"],
  ["Bhavana Singh",["Divya","G. Dinesh","M. Snehin Yadav"],"Which colleges are / aren't registering → who Publicity should target"],
+ ["Harini",["G. Dinesh","M. Snehin Yadav"],"Harini's 'where to push' list (colleges/branches/years not registering) every evening by 8 PM → distribution targets the gaps"],
+ ["Harini","V. Harihara Sai","Harini's 'where to push' list every evening by 8 PM → CR squad targets the classes not registering"],
+ ["Harini","Manvita Hamsini","Harini backs up Manvita on the Unstop page and the daily registration count"],
+ ["Harini",["Gnaneshwar Chepuri","Manish Bollikonda"],"Harini coordinates Database members' daily work with Koteshwar"],
+ ["Harini","Hasmitha","6 PM / 10 PM check-ins"],
  ["Gnaneshwar Chepuri","Gera Gladson","Participant/team lists → Help Desk adds them to the community"],
  ["Koteshwar","Sohan Soma","First registration count today"],
  // Design
